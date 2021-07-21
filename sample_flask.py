@@ -1,3 +1,4 @@
+import threading
 from flask import Flask
 import flask
 import datetime
@@ -11,13 +12,18 @@ import os
 app = Flask(__name__)
 Markdown(app, extensions=["nl2br", "fenced_code"])
 
-data='' # read .md
+data = ''  # read .md
 
 # init
-Nowdate= datetime.datetime.now().strftime("%Y-%m") # 접근하려는 폴더 날짜 
-FineFileName=os.popen('ls -b /home/pi/my_github_project/AlwaysRecord/'+str(Nowdate)+' | tail -1').read() # 찾으려는 파일 (이름순 정렬 후 제일 마지막 (최신))
-FineFileName=FineFileName.replace("\n", "") #줄바꿈 지우기
-data=os.popen('sed -n "/네끼/,\$p" '+'/home/pi/my_github_project/AlwaysRecord/'+str(Nowdate)+str('/')+FineFileName).read()# 해당하는 행 부터 끝까지 저장하기
+Nowdate = datetime.datetime.now().strftime("%Y-%m")  # 접근하려는 폴더 날짜
+FineFileName = os.popen('ls -b /home/pi/my_github_project/AlwaysRecord/' +
+                        str(Nowdate)+' | tail -1').read()  # 찾으려는 파일 (이름순 정렬 후 제일 마지막 (최신))
+FineFileName = FineFileName.replace("\n", "")  # 줄바꿈 지우기
+data = os.popen('sed -n "/네끼/,\$p" '+'/home/pi/my_github_project/AlwaysRecord/' +
+                str(Nowdate)+str('/')+FineFileName).read()  # 해당하는 행 부터 끝까지 저장하기
+
+
+
 
 @app.route('/')
 def index():
@@ -30,7 +36,7 @@ def index():
     path = '/home/pi/my_github_project/Test_Server/log/'  # 로그 파일 경로
     createFolder(path)  # 해당 경로가 있는지 확인
     FileName = path+DateToFileName  # 현재 시간과 경로를 결합하여 로그 파일 경로 이름 생성
-    
+
     LogFile = open(FileName, 'a')  # 파일 열기
     LogFile.write(str(LogIpAddress)+str('\n'))  # 파일 쓰기
     LogFile.close()  # 파일 닫기
@@ -43,20 +49,43 @@ def index():
     #시간이 맞으면 읽어오기
 
     #읽으려는 파일 알아오기
-    Nowdate= datetime.datetime.now().strftime("%Y-%m") # 접근하려는 폴더 날짜 
-    FineFileName=os.popen('ls -b /home/pi/my_github_project/AlwaysRecord/'+str(Nowdate)+' | tail -1').read() # 찾으려는 파일 (이름순 정렬 후 제일 마지막 (최신))
-    FineFileName=FineFileName.replace("\n", "") #줄바꿈 지우기
-    
-    if int(datetime.datetime.now().strftime("%H%M"))==2358:
-        data=os.popen('sed -n "/네끼/,\$p" '+'/home/pi/my_github_project/AlwaysRecord/'+str(Nowdate)+str('/')+FineFileName).read()# 해당하는 행 부터 끝까지 저장하기
+#    Nowdate = datetime.datetime.now().strftime("%Y-%m")  # 접근하려는 폴더 날짜
+#    FineFileName = os.popen('ls -b /home/pi/my_github_project/AlwaysRecord/'+str(
+#        Nowdate)+' | tail -1').read()  # 찾으려는 파일 (이름순 정렬 후 제일 마지막 (최신))
+#    FineFileName = FineFileName.replace("\n", "")  # 줄바꿈 지우기
+#
+#    #if str(datetime.datetime.now().strftime("%H%M"))==str('0014'): # 하루에 마지막에 업데이트 !
+#    data = os.popen('sed -n "/네끼/,\$p" '+'/home/pi/my_github_project/AlwaysRecord/' +
+#                    str(Nowdate)+str('/')+FineFileName).read()  # 해당하는 행 부터 끝까지 저장하기
 
-    #마크다운을 html로 내보내기 위한 방향 
+    #마크다운을 html로 내보내기 위한 방향
     #MarkDownDiary = open("templates/index.md", 'r')
     #data = MarkDownDiary.read()
     #MarkDownDiary.close()
 
     return render_template('index.html', data=data)
 
+def dataUpdater():
+    global data
+    #시간이 맞으면 읽어오기
+    while True:
+        #읽으려는 파일 알아오기
+        Nowdate = datetime.datetime.now().strftime("%Y-%m")  # 접근하려는 폴더 날짜
+        FineFileName = os.popen('ls -b /home/pi/my_github_project/AlwaysRecord/'+str(
+            Nowdate)+' | tail -1').read()  # 찾으려는 파일 (이름순 정렬 후 제일 마지막 (최신))
+        FineFileName = FineFileName.replace("\n", "")  # 줄바꿈 지우기
+
+        if str(datetime.datetime.now().strftime("%H%M")) == str('2358'):  # 하루에 마지막에 업데이트 !
+            data = os.popen('sed -n "/네끼/,\$p" '+'/home/pi/my_github_project/AlwaysRecord/' +
+                            str(Nowdate)+str('/')+FineFileName).read()  # 해당하는 행 부터 끝까지 저장하기
+
 
 if __name__ == "__main__":
+
+    Updater = threading.Thread(target=dataUpdater, args=())  # 로그 그리기
+
+    Updater.daemon = True
+    Updater.start()
+
+
     app.run(host='0.0.0.0', port=8080, debug=False)
