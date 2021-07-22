@@ -16,8 +16,8 @@ Markdown(app, extensions=["nl2br", "fenced_code"])
 data = ''  # read ( .md ) init
 LogPath = '/home/pi/my_github_project/Test_Server/log/'  # 로그 파일 경로
 TargetPath = '/home/pi/my_github_project/AlwaysRecord/'
-TargetKeyword='네끼'
-UpdateTime='2358'
+TargetKeyword='네끼' # 찾으려는 타켓 키워드
+UpdateTime='2358' # 업데이트 시간
 
 @app.route('/')
 def index():
@@ -43,6 +43,7 @@ def index():
 def dataUpdater():
     global data,TargetKeyword,UpdateTime
     #시간이 맞으면 읽어오기
+    Start = True #처음은 초기화
     while True:
         #읽으려는 파일 알아오기
         DateNow = datetime.datetime.now()
@@ -52,9 +53,11 @@ def dataUpdater():
             DateDir)+' | tail -1').read()  # 찾으려는 파일 (이름순 정렬 후 제일 마지막 (최신))
         FineFileName = FineFileName.replace("\n", "")  # 줄바꿈 지우기
 
-        if str(DateNow.strftime("%H%M")) == str(UpdateTime):  # 하루에 마지막에 업데이트 !
+        if str(DateNow.strftime("%H%M")) == str(UpdateTime) or Start == True:  # 하루에 마지막에 업데이트 !
             data = os.popen('sed -n "/'+str(TargetKeyword)+'/,\$p" '+str(TargetPath) +
                             str(DateDir)+str('/')+FineFileName).read()  # 해당하는 행 부터 끝까지 저장하기
+        
+        Start=False
 
 
 if __name__ == "__main__":
