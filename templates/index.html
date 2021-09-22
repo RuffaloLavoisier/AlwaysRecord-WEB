@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta http-equiv="refresh" content="60">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Diary</title>
 </head>
-
 <body>
+    
     <div>
-        <!-- Markdown Content -->
+        <!-- diary -->
         <div> {{ data|markdown }} </div>
-        <div style="margin: 1rem 0rem; border-bottom: 1px solid black;"></div> <!-- Markdown Editor -->
-    </div>
+        <div style="margin: 1rem 0rem; border-bottom: 1px solid black;"></div> <!-- I am hungry -->
+           </div>
+          
+    <img src="{{ url_for('static', filename=image_file) }}">
 </body>
+
 
 </html>
