@@ -55,8 +55,8 @@ def index():
         +"\n"+str("[Region]:")+str(api_info['region']) \
         +"\n"+str("[Longitude]:")+str(api_info['lon']) \
         +"\n"+str("[Latitude]:")+str(api_info['lat']) \
-        +"\n"+str("[Time zone]:")+str(api_info['timezone']) \
-        +"\n"+str("[Zip code]:")+str(api_info['zip'])+"\n"
+        +"\n"+str("[Time-zone]:")+str(api_info['timezone']) \
+        +"\n"+str("[Zip-code]:")+str(api_info['zip'])+"\n"
     DateNow = datetime.datetime.now()
     LogIpAddress = str(DateNow.strftime("%Y/%m/%d-%H:%M:%S")) + \
         str(" - ")+str(ip_address)+"\n"+str(All_param)  # log ip address with date time
@@ -109,3 +109,5 @@ if __name__ == "__main__":
     Updater.start()
 
     app.run(host='0.0.0.0',port=8080, debug=False)
+
+
