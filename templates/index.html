@@ -1,21 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="refresh" content="60">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Diary</title>
+    <title>Ta-da!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        body{
+            background-color: black;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <script language="javascript">
+        function getTime() {
+            var date_now = new Date()
+            var tomorrow = new Date(date_now.setDate(date_now.getDate()+1))
+            //const objday = new Date(2021,10,11);
+            const objday = new Date(tomorrow.getFullYear(),tomorrow.getMonth(),tomorrow.getDate());
+            const currDay = new Date();
+            let diff = objday - currDay;
+            const diffDays = Math.floor((objday.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+            diff -= diffDays * (1000 * 60 * 60 * 24);
+            const diffHours = Math.floor(diff / (1000 * 60 * 60));
+            diff -= diffHours * (1000 * 60 * 60);
+            const diffMin = Math.floor(diff / (1000 * 60));
+            diff -= diffMin * (1000 * 60);
+            const diffSec = Math.floor(diff / 1000);
+            document.getElementById("test").innerHTML=
+            (`${diffHours < 10 ? `0${diffHours}` : diffHours}H 
+            ${diffMin < 10 ? `0${diffMin}` : diffMin}M 
+            ${diffSec < 10 ? `0${diffSec}` : diffSec}S`);
+            setInterval("getTime()",900);     //1초 지난후 time()실행
+        }</script>
 </head>
 <body>
-    
     <div>
-        <!-- diary -->
-        <div> {{ data|markdown }} </div>
-        <div style="margin: 1rem 0rem; border-bottom: 1px solid black;"></div> <!-- I am hungry -->
-           </div>
-          
-    <img src="{{ url_for('static', filename=image_file) }}">
+        <!-- I am hungry -->
+        <div align="center"><img style="
+            border: 3px solid white;
+            border-radius: 30px;
+            -moz-border-radius: 30px;
+            -khtml-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            " src="{{ url_for('static', filename='image/flight.gif') }}" width="15%">
+            <h3><b style="color:white;">{{ data|markdown }}</b></h3>
+            <img style="
+            border: 3px solid white;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -khtml-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            " src="{{ url_for('static', filename=image_file) }}" width="10%">
+        </div>
+        <div style="margin: 1rem 0rem; border-bottom: 1px solid white;"></div> <!-- I am hungry -->
+    </div>
+    <div align="center">
+        <body onload="getTime()">
+        <h2><b style="
+            /* border: 1px solid skyblue;
+            border-radius: 30px;
+            -moz-border-radius: 30px;
+            -khtml-border-radius: 30px;
+            -webkit-border-radius: 30px;
+            background-color: whitesmoke;  */
+            color: white;">Today : <span id="test"></span></b></h2>
+        </body>
 </body>
-
-
-</html>
