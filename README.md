@@ -3,6 +3,8 @@
 It's a personal notebook and a program that records who accessed my notebook.  
 개인 수첩인 동시에 누가 내 수첩을 접속했는지 확인하는 프로그램입니다.
 
+웹사이트 버튼을 누르면 일정한 횟수만큼 알람을 주는 페이지가 추가되었습니다. 
+
 ## Usage
 
 ```
