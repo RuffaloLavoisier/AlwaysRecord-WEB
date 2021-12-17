@@ -2,3 +2,6 @@
 log/
 
 static/image/
+
+# Markdown data file
+data_md.md

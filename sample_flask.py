@@ -52,13 +52,10 @@ def index():
     LogIpAddress = str(DateNow.strftime("%Y/%m/%d-%H:%M:%S")) + \
         str(" - ")+str(ip_address)+"\n"  # log ip address with date time
     DateToFileName = DateNow.strftime("%Y-%m-%d-%a")  # 현재 시간을 로그 파일 이름으로
-    data = "# "+DateToFileName+"\n" + \
-        "### Graduation project [Origin Full](https://platform.hoseo.ac.kr/contest/view?idx=248)" + \
-        "\n" + \
-        "### Graduation project [ENG sub Full](https://youtu.be/pA53EucmKng)" + \
-        "\n" + \
-        "### Don't click! [website](http://39.124.30.130/test_page)"
+    MarkDown_file = open('data_md.md', 'r')
 
+    data = "# "+DateToFileName+"\n" + \
+        MarkDown_file.read()
     createFolder(LogPath)  # 해당 경로가 있는지 확인
 
     FileName = LogPath+DateToFileName  # 현재 시간과 경로를 결합하여 로그 파일 경로 이름 생성

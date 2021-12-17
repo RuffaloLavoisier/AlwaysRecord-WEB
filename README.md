@@ -3,12 +3,14 @@
 It's a personal notebook and a program that records who accessed my notebook.  
 개인 수첩인 동시에 누가 내 수첩을 접속했는지 확인하는 프로그램입니다.
 
-웹사이트를 활성화하면 일정한 횟수만큼 알람을 주는 페이지가 추가되었습니다. 
-
 ## Usage
 
 ```
 $ python3 sample_flask.py 
+```
+마크다운 파일에 데이터리스트를 추가합니다.
+```
+$ echo "Your data list" > data_md.md
 ```
 ### Log File Location
 
@@ -27,6 +29,9 @@ $ python3 sample_flask.py
 
 2.로그파일이 많아지면 자동으로 오래된 파일을 삭제합니다.
 
+3.웹사이트를 활성화하면 일정한 횟수만큼 알람을 주는 페이지가 추가되었습니다. 
+
+4.자동으로 타겟페이지 전환을 추가하였습니다.
 ## PS
 
 당신이 직접 매일 글을 쓰면서 당신의 미니 블로그처럼 보여줄 수 있습니다.  
