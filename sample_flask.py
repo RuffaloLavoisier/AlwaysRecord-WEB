@@ -57,7 +57,7 @@ def index():
         "\n" + \
         "### Graduation project [ENG sub Full](https://youtu.be/pA53EucmKng)" + \
         "\n" + \
-        "### Don't click! [website](http://39.124.30.130/)"
+        "### Don't click! [website](http://39.124.30.130/test_page)"
 
     createFolder(LogPath)  # 해당 경로가 있는지 확인
 
@@ -75,12 +75,20 @@ def index():
     return render_template('index.html', data=data, image_file="image/"+"reva.png", timer=timer_study)
 
 
+@app.route('/test_page')
+def test():
+    ip_address = flask.request.remote_addr
+    sendEmail(ip_address, "test")
+    print(flask.request.remote_user)
+    return render_template('intro.html')
+
+
 @app.route('/')
 def intro():
     ip_address = flask.request.remote_addr
     sendEmail(ip_address, "main")
     print(flask.request.remote_user)
-    return render_template('intro.html')
+    return render_template('test.html')
 
 
 def dataUpdater():
